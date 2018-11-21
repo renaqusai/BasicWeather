@@ -1,0 +1,43 @@
+body {
+	background-size: cover;
+}
+
+.row {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.card {
+	margin: 0 auto;
+	width: 160px;
+	box-shadow: 4px 8px 1px;
+}
+
+.weather-icon {
+	height: 100px;
+	margin-top: 20px;
+}
+
+.form-group,
+.zip-inputs-wrap,
+.additional-info-card-wrap {
+	margin: 0 auto;
+}
+
+.additional-info-card-wrap {
+	margin-bottom: 150px;
+}
+
+footer {
+	position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+	background-color: #B9B6BD;
+	font-size: 24px;
+}
+
+.forecast-zip {
+	display: inline-block;
+}

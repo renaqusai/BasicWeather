@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+	<!-- Custom Favicon -->
+	<link rel="icon" type="image/png" href="assets/images/weather.png">
+
+	<!-- Bootstrap include, with jquery & stylesheet -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+	 crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+	 crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+	 crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+	 crossorigin="anonymous">
+
+	<!-- ajax include -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+	<!-- stylesheet include -->
+	<link rel="stylesheet" href="assets/css/style.css">
+
+	<title>Basic Weather</title>
+
+</head>
+
+<!-- When the body loads, trigger the showEntryHideForm() function -->
+
+<body onload="showEntryHideForm()" background="assets/images/GGB.jpg">
+	<div class="entry-container container">
+		<div class="text-center">
+			<span><h1 id="today" >Today</h1></span>
+			<h1>
+				<marquee behavior="scroll" bgcolor="white" loop="3" width="30%">
+					<i>
+						<font color="black" id="time-display">    Time : </font>
+					</i>
+					<br>
+					<i>
+						<font color="black" id="date">Date : </font>
+					</i>
+				</marquee>
+			</h1>
+
+			<!-- This form will be where users input data about the zips -->
+			<form id="zip-form">
+				<div class="form-group">
+					<h2>Check the weather</h2>
+					<label for="zip-input" class="zipcode-label">Zip code: </label>
+					<div class="col-sm-3 zip-inputs-wrap">
+						<input type="number" class="form-control" placeholder="ex 94103" id="zip-input"><br>
+						<!-- This button will trigger our AJAX call -->
+						<input id="find-zip" type="submit" class="btn btn-primary" value="Search">
+					</div>
+				</div>
+			</form>
+
+			<!-- We're injecting our constructed content and data in here -->
+			<div id="zip-view"></div>
+		</div>
+	</div>
+
+	<div class="page-wrap text-center card-container">
+		<div class="row">
+
+			<!-- Forecast weather cards -->
+			<!-- Day1 -->
+			<div class="card bg-light forecast-card1 selected">
+				<!-- <img class="card-img-top" src="assets/images/sun.png" alt="Card image cap"> -->
+				<div class="card-img-top"><img id="weather-icon1" class="weather-icon"></div>
+				<div class="card-body">
+					<h5 id="day1" class="card-title">Day of the week</h5>
+					<h2 class="card-text weather-text" id="day1temp"></h2>
+				</div>
+				<ul class="list-group list-group-flush">
+					<li class="list-group-item bg-light sunrise-time1" id="day1Sunrise"><strong>Sunrise time: </strong></li>
+					<li class="list-group-item bg-light sunset-time1" id="day1Sunset"><strong>Sunset time: </strong></li>
+				</ul>
+			</div>
+
+			<!-- Day2 -->
+			<div class="card bg-dark forecast-card2">
+				<div class="card-img-top"><img id="weather-icon2" class="weather-icon"></div>
+				<div class="card-body">
+					<h5 id="day2" class="card-title">Day of the week</h5>
+					<h2 class="card-text weather-text" id="day2temp">{{ HighTemp }} - {{ LowTemp }}</h2>
+				</div>
+				<ul class="list-group list-group-flush">
+					<li class="list-group-item bg-dark sunrise-time2" id="day2Sunrise"><strong>Sunrise time: </strong></li>
+					<li class="list-group-item bg-dark sunset-time2" id="day2Sunset"><strong>Sunset time: </strong></li>
+
+				</ul>
+			</div>
+
+			<!-- Day3 -->
+			<div class="card bg-dark forecast-card3">
+				<div class="card-img-top"><img id="weather-icon3" class="weather-icon"></div>
+				<div class="card-body">
+					<h5 id="day3" class="card-title">Day of the week</h5>
+					<h2 class="card-text weather-text" id="day3temp">{{ HighTemp }} - {{ LowTemp }}</h2>
+				</div>
+				<ul class="list-group list-group-flush">
+					<li class="list-group-item bg-dark sunrise-time3" id="day3Sunrise"><strong>Sunrise time: </strong></li>
+					<li class="list-group-item bg-dark sunset-time3" id="day3Sunset"><strong>Sunset time: </strong></li>
+
+				</ul>
+			</div>
+
+			<!-- Day 4 -->
+			<div class="card bg-dark forecast-card4">
+				<div class="card-img-top"><img id="weather-icon4" class="weather-icon"></div>
+				<div class="card-body">
+					<h5 id="day4" class="card-title">Day of the week</h5>
+					<h2 class="card-text weather-text" id="day4temp">{{ HighTemp }} - {{ LowTemp }}</h2>
+				</div>
+				<ul class="list-group list-group-flush">
+					<li class="list-group-item bg-dark sunrise-time4" id="day4Sunrise"><strong>Sunrise time: </strong></li>
+					<li class="list-group-item bg-dark sunset-time4" id="day4Sunset"><strong>Sunset time: </strong></li>
+				</ul>
+			</div>
+
+			<!-- Day5 -->
+			<div class="card bg-dark forecast-card5">
+				<div class="card-img-top"><img id="weather-icon5" class="weather-icon"></div>
+				<div class="card-body">
+					<h5 id="day5" class="card-title">Day of the week</h5>
+					<h2 class="card-text weather-text" id="day5temp">{{ HighTemp }} - {{ LowTemp }}</h2>
+				</div>
+				<ul class="list-group list-group-flush">
+					<li class="list-group-item bg-dark sunrise-time5" id="day5Sunrise"><strong>Sunrise time: </strong></li>
+					<li class="list-group-item bg-dark sunset-time5" id="day5Sunset"><strong>Sunset time: </strong></li>
+
+				</ul>
+			</div>
+		</div>
+
+		<!-- this is info for the additional boxes, prob should for loop -->
+		<div id="additional-day-data">
+			<div class="additional-info-card-wrap col-sm-6">
+
+				<!-- additional day 1 info -->
+				<div class="day1AdditionalInfo">
+					<li class="list-group-item chance-of-precipitation" id="day1Rain">
+						<h4><strong>Chance of rain: </strong></h4>
+					</li>
+					<li class="list-group-item windspeed" id="day1Wind">
+						<h4><strong>Windspeed: </strong></h4>
+					</li>
+					<li class="list-group-item dayLongPhase" id="day1Phase">
+						<h4><strong>Today will be: </strong></h4>
+					</li>
+					<li class="list-group-item hoursOfSun" id="day1SunTime">
+						<h4><strong>Hours Of Sunshine: </strong></h4>
+					</li>
+					<li class="list-group-item visability" id="day1Visibility">
+						<h4><strong>Visibility: </strong></h4>
+					</li>
+					<li class="list-group-item pressure" id="day1Pressure">
+						<h4><strong>Pressure: </strong></h4>
+					</li>
+				</div>
+
+				<!-- additional day 2 info -->
+				<div class="day2AdditionalInfo">
+					<li class="list-group-item chance-of-precipitation" id="day2Rain">
+						<h4><strong>Chance of rain: </strong></h4>
+					</li>
+					<li class="list-group-item windspeed" id="day2Wind">
+						<h4><strong>Windspeed: </strong></h4>
+					</li>
+					<li class="list-group-item dayLongPhase" id="day2Phase">
+						<h4><strong>Today will be: </strong></h4>
+					</li>
+					<li class="list-group-item hoursOfSun" id="day2SunTime">
+						<h4><strong>Hours Of Sunshine: </strong></h4>
+					</li>
+				</div>
+
+				<!-- additional day 3 info -->
+				<div class="day3AdditionalInfo">
+					<li class="list-group-item chance-of-precipitation" id="day3Rain">
+						<h4><strong>Chance of rain: </strong></h4>
+					</li>
+					<li class="list-group-item windspeed" id="day3Wind">
+						<h4><strong>Windspeed: </strong></h4>
+					</li>
+					<li class="list-group-item dayLongPhase" id="day3Phase">
+						<h4><strong>Today will be: </strong></h4>
+					</li>
+					<li class="list-group-item hoursOfSun" id="day3SunTime">
+						<h4><strong>Hours Of Sunshine: </strong></h4>
+					</li>
+				</div>
+				
+				<!-- additional day 4 info -->
+				<div class="day4AdditionalInfo">
+					<li class="list-group-item chance-of-precipitation" id="day4Rain">
+						<h4><strong>Chance of rain: </strong></h4>
+					</li>
+					<li class="list-group-item windspeed" id="day4Wind">
+						<h4><strong>Windspeed: </strong></h4>
+					</li>
+					<li class="list-group-item dayLongPhase" id="day4Phase">
+						<h4><strong>Today will be: </strong></h4>
+					</li>
+					<li class="list-group-item hoursOfSun" id="day4SunTime">
+						<h4><strong>Hours Of Sunshine: </strong></h4>
+					</li>
+				</div>
+
+				<!-- additional day 5 info -->
+				<div class="day5AdditionalInfo">
+					<li class="list-group-item chance-of-precipitation" id="day5Rain">
+						<h4><strong>Chance of rain: </strong></h4>
+					</li>
+					<li class="list-group-item windspeed" id="day5Wind">
+						<h4><strong>Windspeed: </strong></h4>
+					</li>
+					<li class="list-group-item dayLongPhase" id="day5Phase">
+						<h4><strong>Today will be: </strong></h4>
+					</li>
+					<li class="list-group-item hoursOfSun" id="day5SunTime">
+						<h4><strong>Hours Of Sunshine: </strong></h4>
+					</li>
+				</div>
+			</div>
+		</div>
+
+		<!-- Bootstrap footer -->
+		<footer class="footer">
+			<div class="container">
+				<span>Forecast for: </span><h4 id="zip2" class="forecast-zip"></h4>
+				<!-- This button will trigger our AJAX call -->
+				<input type="submit" class="btn btn-danger btn-sm" value="Back" onclick="location.reload()">
+			</div>
+		</footer>
+
+
+		<!-- Config JS file include -->
+		<script src="assets/js/config.js"></script>
+		<!-- Moment.js include -->
+		<script src="https://unpkg.com/moment"></script>
+		<!-- Our JS file include -->
+		<script src="assets/js/app.js"></script>
+</body>
+
+</html>
